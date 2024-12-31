@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Spotify Playlists</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+        }
+    
+        h1, h2 {
+            color: #2c3e50;
+        }
+    
+        input[type="text"] {
+            padding: 8px;
+            margin: 10px;
+            width: 250px;
+        }
+    
+        button {
+            padding: 8px 16px;
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    
+        button:hover {
+            background-color: #34495e;
+        }
+    
+        ul {
+            list-style-type: none;
+        }
+    
+        li {
+            padding: 8px;
+            margin-bottom: 5px;
+            background-color: #ecf0f1;
+        }
+    
+        a {
+            text-decoration: none;
+            color: #3498db;
+        }
+    
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Your Playlists</h1>
+
+    <!-- Display Spotify playlists -->
+    <ul>
+        {% for playlist in playlists %}
+            <li>
+                <a href="{{ playlist.external_urls.spotify }}" target="_blank">{{ playlist.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Mood-based Playlist Generator -->
+    <h2>Generate Playlist Based on Mood</h2>
+    <form id="moodForm" action="{{ url_for('generate_playlist') }}" method="post">
+        <label for="mood">Enter your mood:</label>
+        <input type="text" id="mood" name="mood" placeholder="e.g., happy, sad, energetic..." required>
+        <button type="submit">Generate Playlist</button>
+    </form>
+
+    <h3>Generated Playlist:</h3>
+    <ul id="generatedPlaylist">
+        <!-- Generated playlist will be displayed here -->
+    </ul>
+
+    <script>
+        // Handle form submission for mood-based playlist generation
+        document.getElementById('moodForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const mood = document.getElementById('mood').value;
+    
+            fetch('/generate_playlist', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ mood: mood })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const playlistContainer = document.getElementById('generatedPlaylist');
+                playlistContainer.innerHTML = ''; // Clear previous results
+                if (data.playlist) {
+                    data.playlist.forEach(track => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = track.name;
+                        const link = document.createElement('a');
+                        link.href = track.url;
+                        link.textContent = 'Listen on Spotify';
+                        listItem.appendChild(link);
+                        playlistContainer.appendChild(listItem);
+                    });
+                } else if (data.message) {
+                    playlistContainer.innerHTML = `<li><a href="${data.playlist_url}" target="_blank">${data.message}</a></li>`;
+                } else {
+                    playlistContainer.innerHTML = '<li>No tracks found for this mood.</li>';
+                }
+            })
+            .catch(error => {
+                console.error('Error generating playlist:', error);
+            });
+        });
+    </script>    
+</body>
+</html>
