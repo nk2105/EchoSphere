@@ -1,1 +1,3 @@
 # EchoSphere
+
+Spotify on Steroids
