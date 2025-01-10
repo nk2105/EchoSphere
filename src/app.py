@@ -13,8 +13,8 @@ app.config['SESSION_COOKIE_NAME'] = 'spotify_session'
 scope = 'user-library-read user-top-read playlist-modify-private playlist-modify-public'
 
 sp_oauth = SpotifyOAuth(
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_SECRET_CLIENT",
+    client_id="f4641d2910514ecd8ea3512dd56acf19",
+    client_secret="fc6386b44b2a4ab2bbd77fd0314b5b97",
     redirect_uri="http://localhost:8888/callback",
     scope=scope
 )
@@ -60,7 +60,7 @@ def top_tracks():
     sp = Spotify(auth=token_info['access_token'])
 
     # Get the user's top tracks
-    top_tracks = sp.current_user_top_tracks(limit=10)
+    top_tracks = sp.current_user_top_tracks(limit=20)
 
     # Process the tracks as needed
     track_names = [track['name'] for track in top_tracks['items']]
@@ -76,7 +76,7 @@ def generate_playlist():
     
     # Get the song suggestions from Ollama
     ollama_response = chat(model='mistral', messages=[
-        {'role': 'user', 'content': f'Suggest me at least 25 songs for the mood "{user_input}" with a focus on the {favorite_genre} genre.'},
+        {'role': 'user', 'content': f'Suggest me at least 25 songs for the mood "{user_input}" with a STRICT focus on the {favorite_genre} genre.'},
     ])
     
     if 'message' in ollama_response and ollama_response['message']:
