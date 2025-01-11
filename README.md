@@ -48,7 +48,6 @@ EchoSphere is a Flask-based web application that enhances your Spotify experienc
 4. **Set up environment variables in your shell configuration file:**
 
     ```sh
-    export OPENAI_API_KEY="yourkey"
     export MISTRAL_API_KEY="yourkey"
     export SPOTIFY_CLIENT_ID="yourid"
     export SPOTIFY_CLIENT_SECRET="yoursecret"
