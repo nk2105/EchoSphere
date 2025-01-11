@@ -1,0 +1,5 @@
+Flask
+Flask-SQLAlchemy
+spotipy
+Werkzeug
+mistralai
