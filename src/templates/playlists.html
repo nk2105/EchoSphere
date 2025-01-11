@@ -129,6 +129,21 @@
             text-align: center;
             color: #b3b3b3;
         }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .form-container, .playlist {
+                width: 100%;
+                margin: 10px 0;
+            }
+
+            .header h1 {
+                font-size: 1.2em;
+            }
+        }
     </style>
 </head>
 <body>
@@ -146,6 +161,7 @@
                 <input type="text" id="favorite_genre" name="favorite_genre" required>
                 
                 <button type="submit">Generate Playlist</button>
+                <div id="loading" style="display: none;">Generating playlist...</div>
             </form>
         </div>
 
@@ -174,6 +190,13 @@
             
             const mood = document.getElementById('mood').value;
             const favorite_genre = document.getElementById('favorite_genre').value;
+
+            if (!mood || !favorite_genre) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            document.getElementById('loading').style.display = 'block';
             
             fetch('/generate_playlist', {
                 method: 'POST',
@@ -184,10 +207,18 @@
             })
             .then(response => response.json())
             .then(data => {
-                alert(data.message);
-                window.open(data.playlist_url, '_blank');
+                document.getElementById('loading').style.display = 'none';
+                if (data.error) {
+                    alert("Error: " + data.error);
+                } else {
+                    alert(data.message);
+                    window.open(data.playlist_url, '_blank');
+                }
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                document.getElementById('loading').style.display = 'none';
+                console.error('Error:', error);
+            });
         });
     </script>
 </body>
