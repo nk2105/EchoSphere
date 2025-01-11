@@ -12,6 +12,20 @@ EchoSphere is a Flask-based web application that enhances your Spotify experienc
 - **Spotify Integration**: Seamlessly integrate with your Spotify account to create and manage playlists.
 - **Explicit Content Filter**: Option to include or exclude explicit content from your playlists.
 
+## Screenshots
+
+### Home Page
+![Home Page](images/home_page.png)
+
+### Register Page
+![Register Page](images/register_page.png)
+
+### Login Page
+![Login Page](images/login_page.png)
+
+### Generate Playlist
+![Generate Playlist](images/generate_playlist.png)
+
 ## Prerequisites
 [Spotify for Developers](https://developer.spotify.com/documentation/web-api/) and [MistralAI API](https://mistral.ai/)
 
@@ -39,5 +53,3 @@ EchoSphere is a Flask-based web application that enhances your Spotify experienc
     export SPOTIFY_CLIENT_ID="yourid"
     export SPOTIFY_CLIENT_SECRET="yoursecret"
     export SECRET_KEY='yourkey'
-
-    
