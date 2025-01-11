@@ -1,10 +1,18 @@
-from ollama import chat
-from ollama import ChatResponse
+import os
+from mistralai import Mistral
 
-response: ChatResponse = chat(model='mistral', messages=[
-  {
-    'role': 'user',
-    'content': 'Suggest me songs of male freedom with title and artist only similar to Young Lust by Pink Floyd. Without any comments.',
-  },
-])
-print(response['message']['content'])
+api_key = os.environ["MISTRAL_API_KEY"]
+model = "mistral-large-latest"
+
+client = Mistral(api_key=api_key)
+
+chat_response = client.chat.complete(
+    model= model,
+    messages = [
+        {
+            "role": "user",
+            "content": "What is the best French cheese?",
+        },
+    ]
+)
+print(chat_response.choices[0].message.content)
