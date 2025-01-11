@@ -3,7 +3,7 @@ from flask import Flask, request, redirect, session, url_for, render_template, j
 from spotipy import Spotify
 from spotipy.oauth2 import SpotifyOAuth
 from spotipy.exceptions import SpotifyException
-from mistralai import Mistral  # Replace with actual MistralAI client import
+from mistralai import Mistral  
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
@@ -66,7 +66,7 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def user_login():
     if 'user_id' in session:
-        return redirect(url_for('me'))  # Redirect to a different endpoint if already logged in
+        return redirect(url_for('me'))  
 
     if request.method == 'POST':
         username = request.form['username']
@@ -100,7 +100,7 @@ def login():
 def callback():
     token_info = sp_oauth.get_access_token(request.args['code'])
     session['token_info'] = token_info
-    print("Token info stored in session:", token_info)  # Debugging line
+    print("Token info stored in session:", token_info)  
     return redirect(url_for('me'))
 
 @app.route('/me')
@@ -112,7 +112,7 @@ def me():
 
     if sp_oauth.is_token_expired(token_info):
         token_info = sp_oauth.refresh_access_token(token_info['refresh_token'])
-        session['token_info'] = token_info  # Update the session
+        session['token_info'] = token_info  
 
     sp = Spotify(auth=token_info['access_token'])
 
@@ -198,7 +198,7 @@ def recommendations():
 
     if sp_oauth.is_token_expired(token_info):
         token_info = sp_oauth.refresh_access_token(token_info['refresh_token'])
-        session['token_info'] = token_info  # Update the session
+        session['token_info'] = token_info  
 
     sp = Spotify(auth=token_info['access_token'])
 
